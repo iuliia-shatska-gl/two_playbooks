@@ -12,7 +12,8 @@
   ansible.builtin.shell: |
     curl -fsSL https://pkgs.tailscale.com/stable/{{ ansible_distribution | lower }}/{{ ansible_distribution_release | lower }}.noarmor.gpg | tee /usr/share/keyrings/tailscale-archive-keyring.gpg >/dev/null
     curl -fsSL https://pkgs.tailscale.com/stable/{{ ansible_distribution | lower }}/{{ ansible_distribution_release | lower }}.tailscale-keyring.list | tee /etc/apt/sources.list.d/tailscale.list
-  creates: /etc/apt/sources.list.d/tailscale.list
+  args:
+    creates: /etc/apt/sources.list.d/tailscale.list
 
 - name: Update APT package index
   ansible.builtin.apt:
