@@ -1,0 +1,10 @@
+- name: Include tasks
+  ansible.builtin.include_tasks:
+    file: "{{ item }}"
+  with_first_found:
+    - files:
+        - "{{ ansible_os_family | lower }}/{{ ansible_distribution | lower }}/{{ ansible_distribution_version | lower }}.yaml"
+        - "{{ ansible_os_family | lower }}/{{ ansible_distribution | lower }}/{{ ansible_distribution_major_version | lower }}.yaml"
+        - "{{ ansible_os_family | lower }}/{{ ansible_distribution | lower }}/general.yaml"
+        - "{{ ansible_os_family | lower }}/general.yaml"
+      skip: True

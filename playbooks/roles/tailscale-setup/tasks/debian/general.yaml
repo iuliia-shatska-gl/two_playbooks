@@ -1,0 +1,29 @@
+- name: Install dependencies
+  ansible.builtin.package:
+    name:
+      - sudo
+      - curl
+      - gnupg
+      - apt-transport-https
+    state: present
+    update_cache: true
+
+- name: Install Tailscale APT repo
+  ansible.builtin.shell: |
+    curl -fsSL https://pkgs.tailscale.com/stable/{{ ansible_distribution | lower }}/{{ ansible_distribution_release | lower }}.noarmor.gpg | tee /usr/share/keyrings/tailscale-archive-keyring.gpg >/dev/null
+    curl -fsSL https://pkgs.tailscale.com/stable/{{ ansible_distribution | lower }}/{{ ansible_distribution_release | lower }}.tailscale-keyring.list | tee /etc/apt/sources.list.d/tailscale.list
+  creates: /etc/apt/sources.list.d/tailscale.list
+
+- name: Update APT package index
+  ansible.builtin.apt:
+    update_cache: true
+
+- name: Install Tailscale
+  ansible.builtin.package:
+    name:
+      - tailscale
+    state: latest
+
+- name: Start Tailscale
+  ansible.builtin.command:
+    cmd: "tailscale up --ssh --authkey={{ auth_key }} --hostname={{ hostname }}"

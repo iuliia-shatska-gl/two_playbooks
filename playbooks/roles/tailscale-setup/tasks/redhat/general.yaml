@@ -1,0 +1,60 @@
+- name: Ensure required dependencies are installed
+  ansible.builtin.package:
+    name:
+      - sudo
+      - curl
+      - gnupg2
+      - yum-utils
+    state: present
+    update_cache: yes
+
+- name: Add Tailscale repository for CentOS
+  ansible.builtin.command:
+    cmd: "dnf config-manager --add-repo https://pkgs.tailscale.com/stable/centos/{{ ansible_distribution_major_version }}/tailscale.repo"
+  when: ansible_distribution == 'CentOS'
+  args:
+    creates: "/etc/yum.repos.d/tailscale.repo"
+
+- name: Add Tailscale repository for Oracle Linux
+  ansible.builtin.command:
+    cmd: "dnf config-manager --add-repo https://pkgs.tailscale.com/stable/oracle/{{ ansible_distribution_major_version }}/tailscale.repo"
+  when: ansible_distribution == 'OracleLinux'
+  args:
+    creates: "/etc/yum.repos.d/tailscale.repo"
+
+- name: Add Tailscale repository for RHEL
+  ansible.builtin.command:
+    cmd: "dnf config-manager --add-repo https://pkgs.tailscale.com/stable/rhel/{{ ansible_distribution_major_version }}/tailscale.repo"
+  when: ansible_distribution == 'RedHat'
+  args:
+    creates: "/etc/yum.repos.d/tailscale.repo"
+
+- name: Add Tailscale repository for Fedora
+  ansible.builtin.command:
+    cmd: "dnf config-manager --add-repo https://pkgs.tailscale.com/stable/fedora/tailscale.repo"
+  when: ansible_distribution == 'Fedora'
+  args:
+    creates: "/etc/yum.repos.d/tailscale.repo"
+
+- name: Add Tailscale repository for Amazon Linux 2
+  ansible.builtin.command:
+    cmd: "yum-config-manager --add-repo https://pkgs.tailscale.com/stable/amazon-linux/2/tailscale.repo"
+  when: ansible_distribution == 'Amazon' and ansible_distribution_major_version == '2'
+  args:
+    creates: "/etc/yum.repos.d/tailscale.repo"
+
+- name: Install Tailscale
+  ansible.builtin.package:
+    name: tailscale
+    state: latest
+    update_cache: yes
+
+- name: Enable and start Tailscale service
+  ansible.builtin.systemd:
+    name: tailscaled
+    enabled: true
+    state: started
+
+- name: Run Tailscale with SSH, Auth Key, and Hostname
+  ansible.builtin.command:
+    cmd: "tailscale up --ssh --authkey={{ auth_key }} --hostname={{ hostname }}"

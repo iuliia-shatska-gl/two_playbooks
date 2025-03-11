@@ -1,0 +1,12 @@
+apps:
+  tailscale_setup:
+    name: Tailscale setup
+    description: Installs tailscale and connects to tailnet using provided authkey
+    versions:
+      v1.0:
+        playbook: playbooks/optional/tailscale_setup-v1.0.yaml
+        metadata:
+          supported_arch:
+            - x86_64
+            - arm64
+          minimum_ram_gb: 1
