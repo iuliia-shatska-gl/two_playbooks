@@ -1,6 +1,6 @@
-apps:
-  tailscale_setup:
-    name: Tailscale setup
+recipes:
+  tailscale:
+    name: Tailscale
     description: Installs tailscale and connects to tailnet using provided authkey
     versions:
       v1.0:
