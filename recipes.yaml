@@ -4,7 +4,7 @@ recipes:
     description: Installs Tailscale and connects to the tailnet using the provided auth key
     versions:
       v1.0:
-        playbook: playbooks/optional/tailscale-v1.0.yaml
+        playbook: playbooks/optional/tailscale_setup-v1.0.yaml
         metadata:
           supported_arch:
             - x86_64
