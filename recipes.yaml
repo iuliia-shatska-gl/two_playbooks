@@ -12,6 +12,6 @@ recipes:
           minimum_ram_gb: 2
           options:
             - name: auth_key
-              description: optional description
+              description: Auth key provided by tailscale
             - name: hostname
-              description: optional description
+              description: Machine name to distinguish from others
