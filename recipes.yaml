@@ -1,6 +1,6 @@
 recipes:
-  tailscale:
-    name: Tailscale
+  two_playbooks:
+    name: two_playbooks
     description: Installs Tailscale and connects to the tailnet using the provided auth key
     versions:
       v1.0:
